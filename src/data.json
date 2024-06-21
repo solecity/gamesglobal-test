@@ -1,0 +1,25 @@
+{
+  "operators": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "dateOfBirth": "01/01/1988",
+      "gameName": "Lucky",
+      "approvalStatus": 0
+    },
+    {
+      "firstName": "Mary",
+      "lastName": "Tulip",
+      "dateOfBirth": "02/03/1999",
+      "gameName": "Sol",
+      "approvalStatus": 1
+    },
+    {
+      "firstName": "Sam",
+      "lastName": "Su",
+      "dateOfBirth": "06/03/1994",
+      "gameName": "Salina",
+      "approvalStatus": 0
+    }
+  ]
+}
