@@ -7,14 +7,14 @@ import { NavBar } from "./components";
 
 function App() {
   return (
-    <Router>
+    <>
       <NavBar />
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/operators" element={<Operators />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 

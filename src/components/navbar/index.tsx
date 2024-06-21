@@ -8,8 +8,12 @@ const NavBar = () => {
       <h2>Backoffice</h2>
 
       <nav>
-        <Link to="/">Home</Link>
-        <Link to="/operators">Operators</Link>
+        <Link data-testid="home" to="/">
+          Home
+        </Link>
+        <Link data-testid="operators" to="/operators">
+          Operators
+        </Link>
       </nav>
     </header>
   );
