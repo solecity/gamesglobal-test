@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
 
 import { Layout, Form, Button } from "../../components";
 import { Operator } from "../../constants/types";
@@ -107,7 +106,7 @@ export default function Operators() {
         <tbody>
           {operators.map((op: Operator, i: number) => (
             <tr key={i}>
-              <td>{i + 1}</td>
+              <td>#{i + 1}</td>
               <td>{op.firstName}</td>
               <td>{op.lastName}</td>
               <td>{op.dateOfBirth}</td>
