@@ -1,9 +1,31 @@
-.main {
-  background-color: #fafafa;
-  height: 100%;
-  width: 100%;
-  padding: 24px;
-  display: flex;
+.toolbar {
+  display: inline-flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #dddddd;
+}
+
+.table > tr:nth-child(even) {
+  background-color: #e0e5e7;
+}
+
+.actions {
+  width: 100%;
+  display: inline-flex;
+}
+
+.actions > button {
+  padding: 6px 4px;
+  font-size: 12px !important;
 }

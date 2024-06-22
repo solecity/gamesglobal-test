@@ -3,21 +3,21 @@
     {
       "firstName": "John",
       "lastName": "Doe",
-      "dateOfBirth": "01/01/1988",
+      "dateOfBirth": "1988-01-01",
       "gameName": "Lucky",
       "approvalStatus": 0
     },
     {
       "firstName": "Mary",
       "lastName": "Tulip",
-      "dateOfBirth": "02/03/1999",
+      "dateOfBirth": "1999-03-02",
       "gameName": "Sol",
       "approvalStatus": 1
     },
     {
       "firstName": "Sam",
       "lastName": "Su",
-      "dateOfBirth": "06/03/1994",
+      "dateOfBirth": "1994-03-06",
       "gameName": "Salina",
       "approvalStatus": 0
     }

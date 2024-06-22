@@ -1,35 +1,92 @@
-import { Dispatch, FunctionComponent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 
-import { Button } from "../../components";
+import { Button, Select, TextField } from "../../components";
+import { operatorSchema } from "../../validators/forms";
+import { defaultDateOfBirth, minDateOfBirth } from "../../utils/general";
+import { Operator } from "../../constants/types";
+
 import styles from "./index.module.css";
 
 interface IForm {
   type: string;
   state: boolean;
+  selected?: Operator | null;
   setState: Dispatch<SetStateAction<boolean>>;
+  setData: Dispatch<SetStateAction<Operator | null>>;
 }
 
-const Form: FunctionComponent<IForm> = ({ type, state, setState }) => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [dateOfBirth, setDateOfBirth] = useState<string>("");
-  const [gameName, setGameName] = useState<string>("");
-  const [approvalStatus, setApprovalStatus] = useState<number>(0);
+const Form: FunctionComponent<IForm> = ({
+  type,
+  selected,
+  setState,
+  setData,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      dateOfBirth: format(defaultDateOfBirth, "yyyy-MM-dd"),
+      gameName: "",
+      approvalStatus: 0,
+    },
+    resolver: zodResolver(operatorSchema),
+  });
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-
-    console.log(firstName, lastName, dateOfBirth, gameName, approvalStatus);
+  const handleClose = () => {
+    setData(null);
+    reset({
+      firstName: "",
+      lastName: "",
+      dateOfBirth: format(defaultDateOfBirth, "yyyy-MM-dd"),
+      gameName: "",
+      approvalStatus: 0,
+    });
+    setState(false);
   };
 
-  const handleCancel = () => {
-    setFirstName("");
-    setLastName("");
-    setDateOfBirth("");
-    setDateOfBirth("");
-    setGameName("");
-    setApprovalStatus(0);
+  const onSubmit = (payload: any): void => {
+    console.log(payload);
+    setData({
+      ...payload,
+      dateOfBirth: format(payload.dateOfBirth, "yyyy-MM-dd"),
+    });
+    reset({
+      firstName: "",
+      lastName: "",
+      dateOfBirth: format(defaultDateOfBirth, "yyyy-MM-dd"),
+      gameName: "",
+      approvalStatus: 0,
+    });
+    setState(false);
   };
+
+  useEffect(() => {
+    if (selected) {
+      reset({
+        firstName: selected.firstName || "",
+        lastName: selected.lastName || "",
+        dateOfBirth:
+          selected.dateOfBirth || format(defaultDateOfBirth, "yyyy-MM-dd"),
+        gameName: selected.gameName || "",
+        approvalStatus: selected.approvalStatus || 0,
+      });
+    }
+  }, [selected]);
 
   return (
     <div className={styles.wrapper}>
@@ -42,61 +99,54 @@ const Form: FunctionComponent<IForm> = ({ type, state, setState }) => {
       <section className={styles.modal}>
         <h2>{type} Operator</h2>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.inputWrapper}>
-            <label>
-              First Name:
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e: any) => setFirstName(e.target.value)}
-              />
-            </label>
+            <TextField
+              register={register}
+              type="text"
+              name="firstName"
+              label=" First Name *"
+              error={errors.firstName?.message}
+            />
 
-            <label>
-              Last Name:
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e: any) => setLastName(e.target.value)}
-              />
-            </label>
+            <TextField
+              register={register}
+              type="text"
+              name="lastName"
+              label=" Last Name *"
+              error={errors.lastName?.message}
+            />
           </div>
 
           <div className={styles.inputWrapper}>
-            <label>
-              Date of Birth:
-              <input
-                type="text"
-                value={dateOfBirth}
-                onChange={(e: any) => setDateOfBirth(e.target.value)}
-              />
-            </label>
+            <TextField
+              register={register}
+              type="date"
+              name="dateOfBirth"
+              label="Date of Birth"
+              min={format(minDateOfBirth, "yyyy-MM-dd")}
+              max={format(defaultDateOfBirth, "yyyy-MM-dd")}
+              error={errors.dateOfBirth?.message}
+            />
           </div>
 
           <div className={styles.inputWrapper}>
-            <label>
-              Game Name:
-              <input
-                type="text"
-                value={gameName}
-                onChange={(e: any) => setGameName(e.target.value)}
-              />
-            </label>
+            <TextField
+              register={register}
+              type="text"
+              name="gameName"
+              label="Game Name *"
+              error={errors.gameName?.message}
+            />
           </div>
 
           <div className={styles.inputWrapper}>
-            <label>
-              Status
-              <select
-                name="approvalStatus"
-                value={approvalStatus}
-                onChange={(e: any) => setApprovalStatus(e.target.value)}
-              >
+            <Select register={register} name="approvalStatus" label="Status">
+              <>
                 <option value="0">Pending</option>
                 <option value="1">Approved</option>
-              </select>
-            </label>
+              </>
+            </Select>
           </div>
 
           <div className={styles.btnWrapper}>
@@ -104,7 +154,7 @@ const Form: FunctionComponent<IForm> = ({ type, state, setState }) => {
               type="reset"
               label="Cancel"
               variant="secondary"
-              action={handleCancel}
+              action={handleClose}
             />
 
             <Button
